@@ -1,0 +1,30 @@
+<h1>Manage Employees</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+<hr>
+<h2>Existing Employees</h2>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Salary</th>
+        <th>Mobile No</th>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+    {% for employee in employees %}
+    <tr>
+        <td>{{ employee.name }}</td>
+        <td>{{ employee.department }}</td>
+        <td>{{ employee.salary }}</td>
+        <td>{{ employee.mobile_no }}</td>
+        <td>{{ employee.email }}</td>
+        <td>
+            <a href="{% url 'delete_employee' employee.id %}">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
