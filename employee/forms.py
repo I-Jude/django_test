@@ -8,8 +8,8 @@ class LoginForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        username = cleaned_data.get("username")
-        password = cleaned_data.get("password")
+        username = cleaned_data.get("Email")
+        password = cleaned_data.get("Password")
         
         if username and password:
             user = authenticate(username=username, password=password)
@@ -26,7 +26,7 @@ class EmployeeForm(forms.ModelForm):
         fields = ['username', 'email', 'department', 'salary', 'mobile_no']
 
     def clean_password(self):
-        # Ensure that passwords are hashed and validated properly
+
         password = self.cleaned_data.get('password')
         if not password:
             raise forms.ValidationError("Password is required.")

@@ -1,29 +1,88 @@
-<h2>Employee List</h2>
-<a href="{% url 'add_employee' %}">Add Employee</a>
-<table>
-    <thead>
-        <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Department</th>
-            <th>Salary</th>
-            <th>Mobile No</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for employee in employees %}
-        <tr>
-            <td>{{ employee.username }}</td>
-            <td>{{ employee.email }}</td>
-            <td>{{ employee.department }}</td>
-            <td>{{ employee.salary }}</td>
-            <td>{{ employee.mobile_no }}</td>
-            <td>
-                <a href="{% url 'edit_employee' employee.pk %}">Edit</a>
-                <a href="{% url 'delete_employee' employee.pk %}">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        .actions a {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Employee List</h2>
+
+    <!-- Display "Add Employee" link only if the user is an admin -->
+    {% if user.is_staff %}
+    <a href="{% url 'add_employee' %}">Add Employee</a>
+    {% endif %}
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Department</th>
+                {% if user.is_staff %}
+                <th>Salary</th>
+                {% endif %}
+                <th>Mobile No</th>
+                {% if user.is_staff %}
+                <th>Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+            <tr>
+                <td>{{ employee.username }}</td>
+                <td>{{ employee.email }}</td>
+                <td>{{ employee.department }}</td>
+                {% if user.is_staff %}
+                <td>{{ employee.salary }}</td>
+                {% endif %}
+                <td>{{ employee.mobile_no }}</td>
+                {% if user.is_staff %}
+                <td>
+                    <a href="{% url 'edit_employee' employee.pk %}">Edit</a>
+                    <a href="{% url 'delete_employee' employee.pk %}">Delete</a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
